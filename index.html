@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forward Sourcing Quest · SEAT vs CUPRA · Compras</title>
+<title>Forward Sourcing Quest · IBIZA vs LEON · Compras</title>
 <style>
 :root{--acc:#52D273;--txt:#F7FAFC;--sub:#BCD0DE;--panel:rgba(9,18,34,.88);--seat:#E30613;--cupra:#B87333}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,7 +24,7 @@ input{font-family:inherit}
 .chip{font-weight:900;font-size:15px;padding:6px 11px;border-radius:12px;background:rgba(255,255,255,.08);white-space:nowrap}
 #hudScore{color:#FFD25A}#hudMyths{color:#FF9EC0}#hudPart{color:#ffd0b8}
 #hudTeam{color:#fff;letter-spacing:2px}
-#hudTeam.SEAT{background:var(--seat)}#hudTeam.CUPRA{background:var(--cupra)}
+#hudTeam.IBIZA{background:var(--seat)}#hudTeam.LEON{background:var(--cupra)}
 #combo{color:#FF9A3D;display:none}
 .iconbtn{background:rgba(255,255,255,.08);color:var(--txt);border-radius:10px;padding:7px 10px;font-size:15px}
 .iconbtn:hover{background:rgba(255,255,255,.18)}
@@ -111,7 +111,7 @@ h1{font-weight:900}h2{font-size:30px;font-weight:900;margin-bottom:8px}h3{font-s
 .title .kicker{letter-spacing:6px;color:var(--sub);font-weight:800;font-size:14px;margin-bottom:12px}
 .vsbadge{display:inline-flex;align-items:center;gap:10px;margin-top:12px;font-weight:900;font-size:18px;letter-spacing:2px}
 .vsbadge .t{padding:7px 16px;border-radius:999px;color:#fff}
-.vsbadge .t.SEAT{background:var(--seat)}.vsbadge .t.CUPRA{background:var(--cupra)}
+.vsbadge .t.IBIZA{background:var(--seat)}.vsbadge .t.LEON{background:var(--cupra)}
 .missioncard{display:inline-flex;align-items:center;gap:14px;background:#fff;color:#07111E;border-radius:18px;padding:12px 20px;margin-top:16px;box-shadow:0 6px 0 rgba(0,0,0,.35);font-weight:800;font-size:18px;text-align:left}
 .missioncard .big{font-size:44px}
 .missioncard b{display:block;font-size:12px;letter-spacing:3px;color:#FF496A}
@@ -121,8 +121,8 @@ h1{font-weight:900}h2{font-size:30px;font-weight:900;margin-bottom:8px}h3{font-s
 .teampick{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%}
 .tcardpick{border-radius:24px;padding:26px 20px;text-align:center;color:#fff;border:5px solid transparent;box-shadow:0 8px 0 rgba(0,0,0,.4);transition:transform .15s,border .2s;position:relative}
 .tcardpick:hover{transform:translateY(-6px)}
-.tcardpick.SEAT{background:linear-gradient(160deg,#ff3b47,#9e0010)}
-.tcardpick.CUPRA{background:linear-gradient(160deg,#d89a6a,#5a3519)}
+.tcardpick.IBIZA{background:linear-gradient(160deg,#ff3b47,#9e0010)}
+.tcardpick.LEON{background:linear-gradient(160deg,#d89a6a,#5a3519)}
 .tcardpick .nm{font-size:44px;font-weight:900;letter-spacing:6px}
 .tcardpick .e{font-size:54px}
 .tcardpick .last{margin-top:8px;font-weight:800;font-size:15px;opacity:.9}
@@ -381,8 +381,8 @@ h1{font-weight:900}h2{font-size:30px;font-weight:900;margin-bottom:8px}h3{font-s
 .ms .m{color:#FF9EC0;text-decoration:line-through;font-weight:700}.ms .r{color:#c9f8d7;margin-top:3px;font-weight:700}
 .duel{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:12px auto;max-width:760px}
 .dteam{border-radius:20px;padding:16px;color:#fff;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.4);position:relative}
-.dteam.SEAT{background:linear-gradient(160deg,#ff3b47,#9e0010)}
-.dteam.CUPRA{background:linear-gradient(160deg,#d89a6a,#5a3519)}
+.dteam.IBIZA{background:linear-gradient(160deg,#ff3b47,#9e0010)}
+.dteam.LEON{background:linear-gradient(160deg,#d89a6a,#5a3519)}
 .dteam .nm{font-size:28px;font-weight:900;letter-spacing:4px}
 .dteam .sc{font-size:38px;font-weight:900}
 .dteam .st{font-weight:800;font-size:15px;opacity:.9}
@@ -421,7 +421,7 @@ const MYTH_TIME=30;     // preguntas de los mitos
 const TIMEOUT_PENALTY=50;
 
 /* Los dos equipos fijos */
-const TEAMS={SEAT:{e:'🔴',color:'#E30613'},CUPRA:{e:'🟤',color:'#B87333'}};
+const TEAMS={IBIZA:{e:'🔴',color:'#E30613'},LEON:{e:'🟤',color:'#B87333'}};
 
 /* =====================================================================
    CHULETA: definiciones que aparecen DENTRO de cada pregunta
@@ -574,16 +574,16 @@ function choiceGroup(container,confirmRow,opts,{cls='opt',letters='ABCD',onResul
   if(k>=0&&k<btns.length)select(k);else if(l>=0&&l<btns.length&&e.key.length===1)select(l);else if(e.key==='Enter'&&sel>=0)confirm()}}
 
 /* =====================================================================
-   MARCADOR SEAT vs CUPRA (se guarda en este navegador)
+   MARCADOR IBIZA vs LEON (se guarda en este navegador)
    ===================================================================== */
 function myStats(){return{score:S.score,stars:S.stars.reduce((a,b)=>a+b,0),myths:Object.keys(S.busted).length}}
 /* Cada equipo juega en su propio PC: al final se introduce la puntuación del rival para ver quién gana */
-function duelHTML(){const me=S.team,rival=me==='SEAT'?'CUPRA':'SEAT',m=myStats();
+function duelHTML(){const me=S.team,rival=me==='IBIZA'?'LEON':'IBIZA',m=myStats();
  return `<div class="duel"><div class="dteam ${me}" id="dMe"><div class="nm">${me}</div><div class="sc">${m.score} pts</div><div class="st">⭐ ${m.stars}/15 · 💥 ${m.myths}/4 mitos</div></div><div class="vs">VS</div>
  <div class="dteam ${rival}" id="dRival"><div class="nm">${rival}</div><div class="st" style="margin:6px 0">Puntos del otro PC:</div><input id="rivalPts" type="number" min="0" inputmode="numeric" placeholder="0000" style="width:150px;text-align:center;font-size:28px;font-weight:900;border:none;border-radius:12px;padding:6px;color:#07111E;user-select:text"></div></div>
  <div style="text-align:center"><button class="btn gold" id="cmpBtn">⚖️ ¿QUIÉN GANA?</button></div><p class="sub" id="cmpRes" style="text-align:center;margin-top:10px;font-size:22px;font-weight:900"></p>`}
 function bindDuel(){const go=()=>{const v=parseInt($('#rivalPts').value,10);if(isNaN(v)){$('#rivalPts').focus();return}const m=S.score,me=$('#dMe'),rv=$('#dRival');me.classList.remove('win');rv.classList.remove('win');
-  if(m===v){$('#cmpRes').textContent='🤝 ¡Empate!';sfx.pop()}else{const w=m>v?S.team:(S.team==='SEAT'?'CUPRA':'SEAT');(m>v?me:rv).classList.add('win');$('#cmpRes').innerHTML=`🏆 ¡Gana el <span style="color:${TEAMS[w].color}">equipo ${w}</span>!`;confetti(160);sfx.win()}};
+  if(m===v){$('#cmpRes').textContent='🤝 ¡Empate!';sfx.pop()}else{const w=m>v?S.team:(S.team==='IBIZA'?'LEON':'IBIZA');(m>v?me:rv).classList.add('win');$('#cmpRes').innerHTML=`🏆 ¡Gana el <span style="color:${TEAMS[w].color}">equipo ${w}</span>!`;confetti(160);sfx.win()}};
  $('#cmpBtn').onclick=go;$('#rivalPts').onkeydown=e=>{if(e.key==='Enter')go()}}
 
 /* =====================================================================
@@ -596,7 +596,7 @@ function titleScreen(){clearTimers();S.cur=-1;hud(-1,'START');setScene(-1);rende
   <div class="logo" style="color:#FFD25A">${word('FORWARD')}</div>
   <div class="logo" style="color:#45C9FF">${word('SOURCING')}</div>
   <div class="logo" style="color:#FF496A">${word('QUEST')}</div>
-  <div class="vsbadge"><span class="t SEAT">EQUIPO SEAT</span><span style="color:#FFD25A">VS</span><span class="t CUPRA">EQUIPO CUPRA</span></div><br>
+  <div class="vsbadge"><span class="t IBIZA">EQUIPO IBIZA</span><span style="color:#FFD25A">VS</span><span class="t LEON">EQUIPO LEON</span></div><br>
   <div class="missioncard"><span class="big bounce">${PART.e}</span><div><b>VUESTRA MISIÓN</b>Elegir qué proveedor fabricará el <u>${PART.name}</u> de ${PART.model}</div></div>
   <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn wiggle" id="startBtn">▶ ¡EMPEZAR!</button></div>
   <p class="small" style="margin-top:14px">Modelo, proveedores, cifras y escenarios del juego son ficticios.</p></div>`;
@@ -605,14 +605,14 @@ function titleScreen(){clearTimers();S.cur=-1;hud(-1,'START');setScene(-1);rende
 function teamSetup(){clearTimers();hud(-1,'EQUIPO');setScene(-1);const pl=S.players.slice();let pick=S.team||'';
  stage.innerHTML=`<div class="setup">
   <h2 class="zoomin" style="text-align:center">👥 ¿Qué equipo juega en este ordenador?</h2>
-  <div class="teampick zoomin">${['SEAT','CUPRA'].map(t=>`<button class="tcardpick ${t} ${pick===t?'on':''}" data-t="${t}"><div class="nm">${t}</div><div class="last">${t==='SEAT'?'Rival: equipo CUPRA':'Rival: equipo SEAT'}</div></button>`).join('')}</div>
+  <div class="teampick zoomin">${['IBIZA','LEON'].map(t=>`<button class="tcardpick ${t} ${pick===t?'on':''}" data-t="${t}"><div class="nm">${t}</div><div class="last">${t==='IBIZA'?'Rival: equipo LEON':'Rival: equipo IBIZA'}</div></button>`).join('')}</div>
   <div class="setuprow">
    <div class="panel slideup"><div class="field"><label>JUGADORES (opcional · Enter para añadir)</label><input id="pName" maxlength="20" placeholder="Escribe un nombre y pulsa Enter"><div class="playerchips" id="chips"></div></div></div>
    <div class="panel slideup" style="animation-delay:.1s"><h3>📜 Reglas</h3><ul class="rules">
     <li>🖱️ Un solo ratón: si ponéis nombres, <b>va rotando</b> en cada decisión.</li>
     <li>⏱️ <b>60 s</b> por respuesta (<b>30 s</b> en los mitos). Si se acaba: <b>−${TIMEOUT_PENALTY} pts</b>, pero podéis seguir.</li>
     <li>📖 Palabras raras → <b>chuleta amarilla</b> de la pregunta.</li>
-    <li>⚔️ SEAT y CUPRA juegan <b>a la vez</b>, cada uno en su PC. Al final se comparan las puntuaciones.</li></ul></div></div>
+    <li>⚔️ IBIZA y LEON juegan <b>a la vez</b>, cada uno en su PC. Al final se comparan las puntuaciones.</li></ul></div></div>
   <button class="btn wiggle" id="goTeam" ${pick?'':'disabled'}>¡A JUGAR! ▶</button></div>`;
  document.querySelectorAll('.tcardpick').forEach(b=>b.onclick=()=>{pick=b.dataset.t;sfx.pop();document.querySelectorAll('.tcardpick').forEach(x=>x.classList.toggle('on',x===b));$('#goTeam').disabled=false;$('#goTeam').textContent=`¡A JUGAR, EQUIPO ${pick}! ▶`});
  const chips=$('#chips');
@@ -693,12 +693,12 @@ function summaryHTML(){return `<div class="summary">${LEVELS.map((L,i)=>`<div cl
 function mythSumHTML(){return `<h3 style="text-align:left">💥 Mitos destruidos</h3><div class="mythsum">${MYTH_KEYS.map(k=>`<div class="ms"><div class="m">${MYTHS[k].myth}</div><div class="r">✅ ${MYTHS[k].title}</div></div>`).join('')}</div>`}
 
 function finale(){clearTimers();S.cur=4;hud(4,'FIN');setScene(-1);confetti(250);sfx.win();
- const win=S.finalists[0]||'Espejos Alfa';const other=S.team==='SEAT'?'CUPRA':'SEAT';
+ const win=S.finalists[0]||'Espejos Alfa';const other=S.team==='IBIZA'?'LEON':'IBIZA';
  stage.innerHTML=`<div class="panel accent zoomin" style="max-width:1100px;text-align:center;max-height:100%;overflow:auto">
   <div style="display:flex;justify-content:center;gap:14px;align-items:center">${mascot('happy')}<span style="font-size:60px" class="bounce">${PART.e}</span></div>
   <h1 style="font-size:36px;margin:8px 0">🏆 ¡${win.toUpperCase()} FABRICARÁ EL RETROVISOR!</h1>
   <p class="sub">El <b style="color:${TEAMS[S.team].color}">equipo ${S.team}</b> ha terminado con <b style="color:#FFD25A">${S.score} puntos</b>, <b>${S.stars.reduce((a,b)=>a+b,0)}/15 ⭐</b> y <b style="color:#FF9EC0">${Object.keys(S.busted).length}/${MYTH_KEYS.length} mitos destruidos</b>.</p>
-  <h3 style="margin-top:14px">⚔️ SEAT vs CUPRA: ¿quién gana?</h3><p class="small">Cuando los dos equipos hayan terminado, escribid aquí los puntos que marca el otro PC.</p>${duelHTML()}
+  <h3 style="margin-top:14px">⚔️ IBIZA vs LEON: ¿quién gana?</h3><p class="small">Cuando los dos equipos hayan terminado, escribid aquí los puntos que marca el otro PC.</p>${duelHTML()}
   <div class="def" style="margin:14px auto;font-size:20px">Forward Sourcing = <mark>concurso</mark> para elegir al <mark>proveedor más competitivo</mark> para que fabrique <mark>nuestras piezas</mark></div>
   ${summaryHTML()}${mythSumHTML()}<h3 style="text-align:left">📖 Chuleta completa</h3>${glossaryHTML()}
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn wiggle" id="newGame">↻ NUEVA PARTIDA</button><button class="btn ghost" id="toMap2">🗺️ Mapa</button></div></div>`;
