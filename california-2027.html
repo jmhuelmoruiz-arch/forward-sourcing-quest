@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>California 2027 · SF → Las Vegas → LA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#f6efe3; --paper:#fffaf2; --ink:#1f2a33; --muted:#6b7680;
+  --pacific:#1d5c7a; --sunset:#e8673a; --gold:#f2b541; --desert:#c9845a; --line:#e5dccb;
+  --ok:#2f7d5b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sand);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif}
+header{background:linear-gradient(180deg,#f9c46b 0%,#f08a4b 45%,#c4553a 75%,#2b4d63 100%);color:#fff;padding:28px 20px 70px;position:relative;overflow:hidden}
+header h1{font-family:Fraunces,serif;font-weight:800;font-size:clamp(28px,5vw,48px);margin:0;letter-spacing:-.5px}
+header p{margin:6px 0 0;opacity:.95;font-weight:500}
+.crew{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.crew span{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:3px 10px;border-radius:99px;font-size:13px}
+.route{position:absolute;left:0;right:0;bottom:0;height:60px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+nav .wrap{display:flex;gap:4px;overflow-x:auto;padding:0 8px}
+nav button{flex:none;border:0;background:none;padding:14px 14px;font:600 14px Inter;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+nav button.on{color:var(--ink);border-color:var(--sunset)}
+section{display:none;padding:24px 0 60px}
+section.on{display:block}
+h2{font-family:Fraunces,serif;font-size:26px;margin:0 0 4px}
+h3{font-size:16px;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 20px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+.grid{display:grid;gap:14px}
+@media(min-width:760px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}}
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:10px 0 4px}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:14px Inter;background:#fff;color:var(--ink)}
+textarea{min-height:70px;resize:vertical}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-right:4px;vertical-align:middle}
+.t-arq{background:#e3eef4;color:var(--pacific)}
+.t-shop{background:#fde6db;color:#b44a22}
+.t-fix{background:#1f2a33;color:#fff}
+.t-food{background:#fff1cf;color:#8a6410}
+.t-ev{background:#e4f2ea;color:var(--ok)}
+.t-chk{background:#f3e8ff;color:#6b3fa0}
+.tip{border-left:4px solid var(--gold);background:#fff7e6;padding:10px 14px;border-radius:0 10px 10px 0;margin:10px 0;font-size:14px}
+.warn{border-left-color:var(--sunset);background:#fff0e9}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.check li{list-style:none;margin:0;padding:6px 0;border-bottom:1px dashed var(--line)}
+.check ul{padding:0;margin:0}
+.check input{width:auto;margin-right:8px;accent-color:var(--sunset)}
+.check label{display:flex;align-items:flex-start;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);font-weight:400;margin:0;cursor:pointer}
+.check input:checked + span{text-decoration:line-through;color:var(--muted)}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 16px}
+.progress div{height:100%;background:var(--sunset);width:0;transition:width .3s}
+.weather{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.wx{flex:none;width:130px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.wx b{display:block;font-size:13px}.wx .t{font-family:Fraunces,serif;font-size:22px;margin:4px 0}
+.wx small{color:var(--muted);font-size:12px}
+.day{display:grid;grid-template-columns:86px 1fr;gap:16px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.date{text-align:center;border-right:1px solid var(--line);padding-right:12px}
+.date .dow{font-size:12px;font-weight:700;color:var(--sunset);text-transform:uppercase}
+.date .num{font-family:Fraunces,serif;font-size:36px;line-height:1}
+.date .mon{font-size:12px;color:var(--muted)}
+.date .bed{margin-top:10px;font-size:11px;color:var(--muted)}
+.day h3{font-family:Fraunces,serif;font-size:20px;margin:0}
+.day .drive{font-size:13px;color:var(--muted);margin:2px 0 10px}
+.tl{margin:0;padding:0}
+.tl li{list-style:none;display:grid;grid-template-columns:62px 1fr;gap:8px;padding:6px 0;border-top:1px dashed var(--line)}
+.tl .h{font-weight:700;font-size:13px;color:var(--pacific)}
+.split{display:grid;gap:10px;margin-top:10px}
+@media(min-width:700px){.split{grid-template-columns:1fr 1fr}}
+.who{border-radius:10px;padding:10px 12px;font-size:14px}
+.who.jp{background:#eef5f8}.who.sw{background:#f3f0e8}
+.who b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.filters button{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:6px 12px;font:600 13px Inter;cursor:pointer;color:var(--ink)}
+.filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.empty{color:var(--muted);font-style:italic}
+.saved{font-size:12px;color:var(--ok);margin-left:8px;opacity:0;transition:opacity .3s}
+.legend{font-size:13px;color:var(--muted);margin-bottom:12px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>California 2027</h1>
+    <p>25 mar → 5 abr · San Francisco → Big Sur → Palm Springs → Las Vegas → Los Ángeles</p>
+    <div class="crew"><span>Jose</span><span>Paula</span><span>Andi</span><span>Chacho (arquitecto)</span></div>
+  </div>
+  <svg class="route" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 45 C150 20 250 55 400 35 S650 10 800 38 S950 50 1000 30 L1000 60 L0 60Z" fill="#2b4d63"/>
+    <path d="M40 40 C200 18 300 50 450 32 S700 14 960 34" stroke="#f2b541" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+    <g fill="#fff"><circle cx="40" cy="40" r="5"/><circle cx="230" cy="31" r="5"/><circle cx="420" cy="35" r="5"/><circle cx="600" cy="22" r="5"/><circle cx="780" cy="27" r="5"/><circle cx="960" cy="34" r="5"/></g>
+  </svg>
+</header>
+
+<nav><div class="wrap" id="tabs">
+  <button data-t="plan">🗓️ Plan día a día</button>
+  <button data-t="dormir">🛏️ Dónde dormimos</button>
+  <button data-t="coche">🚙 Coche</button>
+  <button data-t="maletas">🧳 Maletas</button>
+  <button data-t="vuelos">✈️ Vuelos</button>
+</div></nav>
+
+<main class="wrap">
+
+<!-- ================= PLAN ================= -->
+<section id="plan">
+  <h2>Plan día a día</h2>
+  <p class="sub">12 días · 6 paradas · ~1.900 km de coche</p>
+  <div class="legend">
+    <span class="tag t-fix">FIJO</span>no se mueve ·
+    <span class="tag t-arq">ARQ</span>para Chacho ·
+    <span class="tag t-shop">SHOP</span>compras ·
+    <span class="tag t-food">COMER</span>sitios de locales ·
+    <span class="tag t-ev">EVENTO</span>coincide en fechas ·
+    <span class="tag t-chk">RESERVAR</span>se agota
+  </div>
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">Todo</button>
+    <button data-f="arq">Solo arquitectura</button>
+    <button data-f="shop">Solo compras</button>
+    <button data-f="food">Solo comer</button>
+    <button data-f="chk">Lo que hay que reservar</button>
+  </div>
+  <div id="days"></div>
+</section>
+
+<!-- ================= DORMIR ================= -->
+<section id="dormir">
+  <h2>Dónde dormimos</h2>
+  <p class="sub">11 noches. Paga Chacho, así que las sugerencias van de cómodas a caprichosas.</p>
+  <div class="card" style="overflow-x:auto">
+  <table>
+    <thead><tr><th>Noches</th><th>Dónde</th><th>Zona buena</th><th>Sugerencias</th><th>Por qué</th></tr></thead>
+    <tbody>
+      <tr><td><b>25 y 26 mar</b><br>2 noches</td><td>San Francisco</td><td>Embarcadero / SoMa</td><td>1 Hotel San Francisco · Proper Hotel · Palace Hotel</td><td>Ferry Building a pie y la línea T del Muni directa al Chase Center. Evitad Tenderloin y la parte baja de Market St.</td></tr>
+      <tr><td><b>27 mar</b></td><td>Carmel / Big Sur</td><td>Carmel-by-the-Sea o Big Sur norte</td><td><b>Post Ranch Inn</b> (capricho) · Ventana Big Sur · L'Auberge Carmel</td><td>Post Ranch es arquitectura orgánica colgada del acantilado: un regalo para Chacho y deja el día 28 más corto.</td></tr>
+      <tr><td><b>28 mar</b></td><td>Santa Barbara</td><td>Funk Zone / centro</td><td>Hotel Californian · El Encanto (colinas)</td><td>El Californian está en el centro, a pie de los vinos del Funk Zone y la playa.</td></tr>
+      <tr><td><b>29 mar</b></td><td>Palm Springs</td><td>Movie Colony / Old Las Palmas</td><td>The Parker · Holiday House · Del Marcos Hotel · <b>una casa modernista alquilada</b></td><td>Para 4 adultos, una casa de mediados de siglo con piscina es <i>la</i> experiencia de Palm Springs. Del Marcos es de William F. Cody (1947).</td></tr>
+      <tr><td><b>30 mar</b></td><td>Las Vegas</td><td>Strip centro</td><td>Wynn · The Cosmopolitan (terraza sobre las fuentes del Bellagio)</td><td>Una sola noche: a pie de Sphere y del Strip, sin coche.</td></tr>
+      <tr><td><b>31 mar → 4 abr</b><br>5 noches</td><td>Los Ángeles</td><td><b>DTLA</b>: LA Live / Bunker Hill</td><td>JW Marriott o Ritz-Carlton LA Live · <b>Conrad Los Angeles</b></td><td>LA Live: convención y Lakers a 3 min andando (lo mejor para Andi y Chacho). Conrad: está dentro de The Grand de Gehry, frente al Disney Hall, a unos 5 min en Uber.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="tip warn"><b>Reservad DTLA ya.</b> Es la Celebration del 50º aniversario en el LA Convention Center: los hoteles de LA Live se llenarán y subirán de precio.</div>
+  <div class="tip">En SF y LA, que el hotel tenga <b>parking vigilado</b> o que no tengáis coche esas noches: los robos en coches de alquiler son el clásico del turista.</div>
+</section>
+
+<!-- ================= COCHE ================= -->
+<section id="coche">
+  <h2>Coche</h2>
+  <p class="sub">Alquiler de solo ida: recogida en San Francisco, devolución en Los Ángeles.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h3>🚐 Qué coche</h3>
+      <p>Sois 4 adultos con 4 maletas grandes, mochilas y las compras de los outlets. Un SUV mediano <b>no cabe</b>.</p>
+      <ul>
+        <li><b>Monovolumen</b> (Toyota Sienna, Chrysler Pacifica): el más práctico y cómodo.</li>
+        <li><b>SUV grande</b> (Chevrolet Suburban): el que más gusta allí. Ojo: el Tahoe tiene menos maletero con la 3ª fila puesta.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📍 Recogida y devolución</h3>
+      <p><b>Recogida: vie 26 por la mañana, en una oficina del centro de SF.</b> El día 25 no lo necesitáis y os ahorráis una noche de parking.</p>
+      <p><b>Devolución, dos opciones:</b></p>
+      <ul>
+        <li><b>A) Mié 31 en DTLA</b> (mi recomendación): os ahorráis 5 noches de parking (50-70 $/noche) y el tráfico. Para el resto, Uber XL y metro.</li>
+        <li><b>B) Lun 5 en LAX</b>: más cómodo para ir a SoFi y al aeropuerto, pero pagáis un coche aparcado 5 días.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>📋 Al reservar, comprobad</h3>
+      <ul class="check"><ul>
+        <li><label><input type="checkbox" data-k="c1"><span>Que el contrato permite <b>entrar en Nevada</b> (Las Vegas)</span></label></li>
+        <li><label><input type="checkbox" data-k="c2"><span>Tasa de solo ida (one-way fee) SF → LA incluida en el precio</span></label></li>
+        <li><label><input type="checkbox" data-k="c3"><span>Conductores adicionales añadidos (¿quién más conduce?)</span></label></li>
+        <li><label><input type="checkbox" data-k="c4"><span>Seguro a todo riesgo + SLI (responsabilidad civil ampliada): reservadlo desde Europa con todo incluido</span></label></li>
+        <li><label><input type="checkbox" data-k="c5"><span>Tarjeta de crédito física a nombre del conductor principal</span></label></li>
+        <li><label><input type="checkbox" data-k="c6"><span>Carnet de conducir + permiso internacional (recomendable)</span></label></li>
+      </ul></ul>
+    </div>
+    <div class="card">
+      <h3>🛣️ Trucos de conducir como local</h3>
+      <ul>
+        <li><b>Peaje del Golden Gate:</b> solo hacia el sur y solo electrónico. Lo cobra la empresa de alquiler, con su comisión.</li>
+        <li><b>Carriles carpool (HOV):</b> con 4 a bordo podéis usarlos. En LA ahorran muchísimo tiempo. Los «Express Lanes» requieren FasTrak, así que no entréis en esos.</li>
+        <li><b>Giro a la derecha en rojo:</b> permitido salvo que una señal diga «No turn on red».</li>
+        <li><b>Stop de 4 direcciones:</b> pasa primero quien llegó primero.</li>
+        <li><b>Gasolina:</b> llenad antes de Joshua Tree, que dentro del parque no hay gasolineras. En Nevada es más barata.</li>
+        <li><b>Nunca dejéis nada a la vista</b> en el coche, ni una chaqueta.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <h3>📏 Tramos (aprox., sin paradas)</h3>
+    <table>
+      <thead><tr><th>Día</th><th>Tramo</th><th>km</th><th>Horas</th></tr></thead>
+      <tbody>
+        <tr><td>26</td><td>SF ↔ Marin (ida y vuelta)</td><td>60</td><td>1h15</td></tr>
+        <tr><td>27</td><td>SF → Cupertino → Carmel / Big Sur</td><td>210</td><td>2h45</td></tr>
+        <tr><td>28</td><td>Big Sur → Hearst Castle → Santa Barbara</td><td>330</td><td>4h45 ⚠️</td></tr>
+        <tr><td>29</td><td>Santa Barbara → outlets de Cabazon → Palm Springs</td><td>270</td><td>3h30</td></tr>
+        <tr><td>30</td><td>Palm Springs → Joshua Tree → Las Vegas</td><td>430</td><td>5h ⚠️</td></tr>
+        <tr><td>31</td><td>Las Vegas → Los Ángeles</td><td>435</td><td>4h</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= MALETAS ================= -->
+<section id="maletas">
+  <h2>Maletas</h2>
+  <p class="sub">De la niebla de SF a los 28 °C del desierto en 4 días: hay que vestir por capas.</p>
+  <h3>Temperaturas típicas a finales de marzo (mín.–máx.)</h3>
+  <div class="weather">
+    <div class="wx"><b>San Francisco</b><div class="t">9–17°</div><small>Viento y niebla</small></div>
+    <div class="wx"><b>Big Sur</b><div class="t">8–17°</div><small>Niebla por la mañana</small></div>
+    <div class="wx"><b>Santa Barbara</b><div class="t">9–20°</div><small>Suave</small></div>
+    <div class="wx"><b>Palm Springs</b><div class="t">14–28°</div><small>Sol, piscina</small></div>
+    <div class="wx"><b>Joshua Tree</b><div class="t">6–22°</div><small>Sol fuerte, frío al atardecer</small></div>
+    <div class="wx"><b>Las Vegas</b><div class="t">11–24°</div><small>Seco</small></div>
+    <div class="wx"><b>Los Ángeles</b><div class="t">12–22°</div><small>Fresco de noche</small></div>
+  </div>
+  <p class="legend">Medias aproximadas; mirad la previsión una semana antes.</p>
+
+  <div class="card check">
+    <h3>Checklist <span class="saved" id="savedP">✓ guardado</span></h3>
+    <div class="progress"><div id="prog"></div></div>
+    <div class="grid g2" id="packing"></div>
+  </div>
+  <div class="tip"><b>Espacio para los outlets:</b> llevad una bolsa de viaje plegable dentro de la maleta. Y recordad la franquicia de aduana a la vuelta: <b>430 € por viajero</b> que llega en avión a la UE. Por encima, en teoría, hay que declarar.</div>
+</section>
+
+<!-- ================= VUELOS ================= -->
+<section id="vuelos">
+  <h2>Vuelos</h2>
+  <p class="sub">Pendiente de reservar. Lo que escribáis aquí se guarda solo en este navegador. <span class="saved" id="savedF">✓ guardado</span></p>
+  <div class="grid g2">
+    <div class="card">
+      <h3>🛫 Ida · llegada a San Francisco (SFO)</h3>
+      <label>Fecha</label><input data-f="ida_fecha" placeholder="">
+      <label>Aerolínea y nº de vuelo</label><input data-f="ida_vuelo" placeholder="">
+      <label>Salida (aeropuerto y hora)</label><input data-f="ida_sal" placeholder="">
+      <label>Escala</label><input data-f="ida_esc" placeholder="">
+      <label>Llegada (hora local)</label><input data-f="ida_lleg" placeholder="">
+      <label>Localizador</label><input data-f="ida_loc" placeholder="">
+      <label>Notas</label><textarea data-f="ida_notas" placeholder=""></textarea>
+    </div>
+    <div class="card">
+      <h3>🛬 Vuelta · salida desde Los Ángeles (LAX)</h3>
+      <label>Fecha</label><input data-f="vta_fecha" placeholder="">
+      <label>Aerolínea y nº de vuelo</label><input data-f="vta_vuelo" placeholder="">
+      <label>Salida (hora local)</label><input data-f="vta_sal" placeholder="">
+      <label>Escala</label><input data-f="vta_esc" placeholder="">
+      <label>Llegada (aeropuerto y hora)</label><input data-f="vta_lleg" placeholder="">
+      <label>Localizador</label><input data-f="vta_loc" placeholder="">
+      <label>Notas</label><textarea data-f="vta_notas" placeholder=""></textarea>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>Plan preparado en noviembre de 2026. Horarios de partidos y museos: confirmadlos al reservar.</footer>
+
+<script>
+const DAYS = [
+ {dow:"Jue",n:25,city:"San Francisco",bed:"SF",title:"Aterrizar y Warriors",drive:"Sin coche · BART o taxi desde SFO",
+  items:[
+   ["","Llegada a SFO → hotel. Siesta corta, no larga: el partido es esa misma noche.",""],
+   ["17:30","Paseo por Mission Bay; cena pronto por la zona.","food"],
+   ["19:00","<b>Warriors vs Toronto Raptors</b> · Chase Center (confirmad hora y rival al comprar).","fix"],
+   ["","<b>Opening Day de los Giants</b> el mismo día, en Oracle Park, al lado: la zona estará colapsada. Id en Muni (línea T) o andando, nunca en coche.","ev"]
+  ]},
+ {dow:"Vie",n:26,city:"San Francisco",bed:"SF",title:"Golden Gate, Wright y Golden Gate Park",drive:"Recogida del coche por la mañana · ~1h15 en total",
+  items:[
+   ["8:00","Desayuno en Tartine Bakery (Mission) o en el Ferry Building.","food"],
+   ["9:30","Recoger el coche → cruzar el Golden Gate → mirador de Battery Spencer (la foto buena es desde el norte).",""],
+   ["10:30","<b>Marin County Civic Center</b>, la última gran obra de Frank Lloyd Wright. Su aire de ciencia ficción es real: salió en Gattaca.","arq"],
+   ["12:30","Comida en Sausalito, frente a la bahía.","food"],
+   ["15:00","<b>de Young Museum</b> (Herzog & de Meuron): la torre con mirador es gratis. Enfrente, la <b>California Academy of Sciences</b> (Renzo Piano), con su cubierta verde ondulada.","arq"],
+   ["20:00","Cena en Mission: La Taqueria (burrito), o Zuni Café si os apetece algo más clásico.","food"]
+  ]},
+ {dow:"Sáb",n:27,city:"SF → Big Sur",bed:"Carmel / Big Sur",title:"SF moderno y bajada a la costa",drive:"~2h45 · por la 101 y la Hwy 1",
+  items:[
+   ["8:30","<b>Mercado de agricultores del Ferry Building</b> (sábados): el desayuno local de SF.","food"],
+   ["10:00","<b>Salesforce Transit Center</b> y su parque elevado (Pelli Clarke Pelli) → <b>SFMOMA</b> (ampliación de Snøhetta) → <b>140 Maiden Lane</b>, la tienda V.C. Morris de Wright, cuya rampa anticipa el Guggenheim.","arq"],
+   ["13:00","Salida al sur → <b>Apple Park Visitor Center</b> (Foster + Partners) en Cupertino, con maqueta del «anillo» y una terraza que da a él.","arq"],
+   ["15:00","Opcional: <b>Gilroy Premium Outlets</b> (de paso por la 101). Es un aperitivo: el outlet fuerte es el del día 29.","shop"],
+   ["18:00","Carmel o Big Sur. Atardecer en Carmel Beach.",""],
+   ["","Ese día los Giants juegan contra los Rockies en Oracle Park, por si alguien prefiere béisbol a Cupertino.","ev"]
+  ]},
+ {dow:"Dom",n:28,city:"Big Sur → Santa Barbara",bed:"Santa Barbara",title:"Pascua por la costa",drive:"~4h45 sin paradas · el día más largo",
+  items:[
+   ["8:30","<b>Bixby Bridge</b> (el puente de hormigón de 1932) temprano, antes de que llegue la gente.","arq"],
+   ["10:00","McWay Falls (Julia Pfeiffer Burns) y paradas en los miradores.",""],
+   ["11:30","Brunch en <b>Nepenthe</b>, colgado del acantilado.","food"],
+   ["13:30","Colonia de elefantes marinos de Piedras Blancas, de paso.",""],
+   ["14:30","<b>Hearst Castle</b> (Julia Morgan): visita guiada. Es Domingo de Pascua: reservad hora.","arq chk"],
+   ["16:30","→ Santa Barbara (2h30). Cena en La Super-Rica Taquería o en el Funk Zone.","food"]
+  ]},
+ {dow:"Lun",n:29,city:"Santa Barbara → Palm Springs",bed:"Palm Springs",title:"Juzgado, outlets y desierto",drive:"~3h30 · id por la 210 para esquivar el centro de LA",
+  items:[
+   ["9:00","<b>Juzgado de Santa Barbara</b>: neocolonial español con mosaicos sevillanos. Subid gratis a la torre del reloj.","arq"],
+   ["10:30","Salida. Si preferís no alejaros tanto, <b>Camarillo Premium Outlets</b> queda en la 101, a 1 h.","shop"],
+   ["14:00","<b>Desert Hills Premium Outlets</b> (Cabazon): el gran outlet de California, con marcas de lujo y unas 180 tiendas. Reservad 3 horas mínimo.","shop"],
+   ["","Al lado están los dinosaurios de Cabazon: kitsch de carretera de manual.",""],
+   ["17:30","Palm Springs: vuelta al atardecer por la gasolinera del teleférico (Albert Frey, hoy Visitor Center) y la <b>Frey House II</b> sobre la roca (por fuera).","arq"],
+   ["20:00","Cena y piscina. En marzo hace 28 °C.","food"]
+  ]},
+ {dow:"Mar",n:30,city:"Palm Springs → Las Vegas",bed:"Las Vegas",title:"Modernismo y Joshua Tree",drive:"~5h + parque · llenad el depósito antes",
+  items:[
+   ["8:00","Ruta modernista en coche: <b>Kaufmann House</b> (Neutra), barrio de Twin Palms, Elrod House de Lautner (de lejos). Todo por fuera, son casas privadas.","arq"],
+   ["10:00","Batido de dátiles en <b>Shields Date Garden</b> (Indio): una institución local desde 1924.","food"],
+   ["11:00","<b>Joshua Tree NP</b>, de sur a norte: entrada por Cottonwood → Cholla Cactus Garden → Skull Rock → salida por Twentynine Palms.",""],
+   ["15:00","→ Las Vegas por el desierto de Mojave (~3h).",""],
+   ["20:00","<b>Sphere</b> (Populous): hay que verla <i>por dentro</i>, con un espectáculo.","arq chk"],
+   ["22:30","Cena fuera del Strip: Chinatown, en Spring Mountain Road.","food"]
+  ]},
+ {dow:"Mié",n:31,city:"Las Vegas → Los Ángeles",bed:"DTLA",title:"Gehry, desierto y entrada a LA",drive:"~4h · los miércoles no hay el atasco del domingo",
+  items:[
+   ["8:30","<b>Lou Ruvo Center for Brain Health</b> (Gehry): 10 min, solo por fuera.","arq"],
+   ["9:15","<b>Seven Magic Mountains</b> (Ugo Rondinone): tótems de colores en mitad del desierto, en la I-15.","arq"],
+   ["14:30","Opcional, de entrada a LA: <b>Citadel Outlets</b>. Ocupa una antigua fábrica de neumáticos de 1929 con fachada de palacio asirio: compras y arquitectura rara en una sola parada.","shop arq"],
+   ["16:00","Check-in en DTLA → <b>devolver el coche</b> (opción A).",""],
+   ["17:00","<b>Walt Disney Concert Hall</b> (Gehry) con su jardín en la azotea → <b>The Broad</b> (Diller Scofidio + Renfro) → <b>Catedral de Nuestra Señora de los Ángeles</b> (Rafael Moneo) → Bradbury Building.","arq"],
+   ["19:10","Opcional: <b>Dodgers vs Twins</b> en Dodger Stadium (1962, modernismo de manual; a 10 min). Hora por confirmar y calendario de béisbol aún provisional.","ev"]
+  ]},
+ {dow:"Jue",n:1,mon:"abr",city:"Los Ángeles",bed:"DTLA",title:"Celebration día 1 · Disneyland",drive:"Sin coche",
+  split:{
+   sw:"Star Wars Celebration · LA Convention Center, desde la apertura hasta las 17-18 h.",
+   jp:"<b>Disneyland</b> (Anaheim, 45-60 min en Uber). Es temporada alta de vacaciones de primavera: entradas con fecha y Lightning Lane. En Galaxy's Edge ya aparecen Luke, Leia y Han: mandad fotos a los de la convención para darles envidia."},
+  items:[
+   ["","Disneyland: comprad entradas con fecha.","chk"],
+   ["20:00","Cena juntos en <b>Grand Central Market</b> o en Little Tokyo.","food"]
+  ]},
+ {dow:"Vie",n:2,mon:"abr",city:"Los Ángeles",bed:"DTLA",title:"Celebration día 2 · Getty y costa",drive:"Uber",
+  split:{
+   sw:"Star Wars Celebration hasta las 17-18 h.",
+   jp:"<b>Getty Center</b> (Richard Meier, con el jardín de Robert Irwin) → Santa Monica → canales de Venice y Abbot Kinney."},
+  items:[
+   ["","Getty: entrada gratis, pero hay que reservar hora.","arq chk"],
+   ["18:30","Todos: <b>Stahl House</b> (Case Study House #22), visita al atardecer. Es la foto más famosa de la arquitectura de LA. Se agota: reservad en cuanto abran fechas.","arq chk"],
+   ["21:00","Cena coreana en Koreatown (Park's BBQ).","food"]
+  ]},
+ {dow:"Sáb",n:3,mon:"abr",city:"Los Ángeles",bed:"DTLA",title:"Celebration día 3 · Star Wars en el Hollywood Bowl",drive:"Uber",
+  split:{
+   sw:"Star Wars Celebration hasta las 17-18 h.",
+   jp:"<b>Hollyhock House</b> (Wright, Barnsdall Park) → Los Feliz → <b>Griffith Observatory</b> → <b>LACMA</b>, con las galerías nuevas de Zumthor, y el Academy Museum (Renzo Piano)."},
+  items:[
+   ["","Hollyhock House: visitas de jueves a domingo.","arq"],
+   ["19:30","Todos: <b>Star Wars in Concert: The Skywalker Saga</b> en el Hollywood Bowl (2 y 3 de abril). Es el mismo escenario del primer concierto oficial de Star Wars, en 1977. Andi y Chacho no lo perdonarían.","ev chk"]
+  ]},
+ {dow:"Dom",n:4,mon:"abr",city:"Los Ángeles",bed:"DTLA",title:"Celebration día 4 · Lakers",drive:"Metro A Line a Pasadena",
+  split:{
+   sw:"Star Wars Celebration (último día) hasta las 17-18 h.",
+   jp:"<b>Pasadena</b> en metro: <b>Gamble House</b> (Greene & Greene, la cumbre del Arts & Crafts) + jardines de The Huntington."},
+  items:[
+   ["","Gamble House: visitas guiadas con hora.","arq chk"],
+   ["19:00","<b>Lakers vs San Antonio Spurs</b> · Crypto.com Arena, a 3 min de la convención. Juega Wembanyama.","fix"],
+   ["","<b>Langer's</b> (sándwich de pastrami nº 19) cierra los domingos: dejadlo para otro día.","food"]
+  ]},
+ {dow:"Lun",n:5,mon:"abr",city:"LA → casa",bed:"✈️",title:"Estadios camino de LAX",drive:"Uber XL o el coche (opción B)",
+  items:[
+   ["Mañana","<b>SoFi Stadium</b> (HKS, cubierta de ETFE) e <b>Intuit Dome</b> (AECOM), ambos en Inglewood, a 10 min de LAX: Chacho cierra el viaje con estadios. Mirad si hay visita guiada de SoFi a esa hora.","arq chk"],
+   ["","→ LAX. La hora la marca el vuelo.",""]
+  ]}
+];
+
+const tagMap={arq:["t-arq","ARQ"],shop:["t-shop","SHOP"],food:["t-food","COMER"],fix:["t-fix","FIJO"],ev:["t-ev","EVENTO"],chk:["t-chk","RESERVAR"]};
+function renderDays(filter){
+  const box=document.getElementById('days');box.innerHTML='';
+  DAYS.forEach(d=>{
+    const items=d.items.filter(i=>filter==='all'||i[2].split(' ').includes(filter));
+    const splitShow=d.split&&(filter==='all');
+    if(filter!=='all'&&!items.length)return;
+    const el=document.createElement('div');el.className='day';
+    el.innerHTML=`<div class="date"><div class="dow">${d.dow}</div><div class="num">${d.n}</div><div class="mon">${d.mon||'mar'} 2027</div><div class="bed">🛏️ ${d.bed}</div></div>
+    <div><h3>${d.title}</h3><div class="drive">${d.city} · ${d.drive}</div>
+    ${splitShow?`<div class="split"><div class="who sw"><b>Andi + Chacho</b>${d.split.sw}</div><div class="who jp"><b>Jose + Paula</b>${d.split.jp}</div></div>`:''}
+    <ul class="tl">${items.map(i=>`<li><span class="h">${i[0]||'·'}</span><span>${i[2]?i[2].split(' ').map(t=>`<span class="tag ${tagMap[t][0]}">${tagMap[t][1]}</span>`).join(''):''}${i[1]}</span></li>`).join('')}</ul></div>`;
+    box.appendChild(el);
+  });
+}
+renderDays('all');
+document.getElementById('filters').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('on',x===b));
+  renderDays(b.dataset.f);
+});
+
+/* Packing */
+const PACK={
+ "📄 Documentos":["Pasaporte (vigente todo el viaje)","ESTA aprobada (una por persona; tramitadla ya)","Carnet de conducir + permiso internacional","Tarjeta de crédito del conductor principal","Seguro de viaje con cobertura médica (la sanidad en EE. UU. es carísima)","Entradas de Warriors, Lakers, Sphere y Hollywood Bowl descargadas en el móvil","Reservas de Hearst Castle, Stahl House, Getty y Gamble House"],
+ "👕 Ropa (por capas)":["Cortavientos o chaqueta ligera (SF y Big Sur)","Jersey o forro polar","Camisetas de manga corta (Palm Springs, Vegas)","Bañador (piscina en Palm Springs)","Zapatillas cómodas para andar mucho","Algo arreglado para la cena en Vegas","Gorra y gafas de sol"],
+ "🔌 Electrónica":["Adaptadores de enchufe tipo A (110 V)","Cargador de coche USB-C (2 puertos)","Batería externa","Soporte de móvil para el coche","eSIM con datos para EE. UU.","Mapas sin conexión de Big Sur y Joshua Tree (no hay cobertura)"],
+ "🏀 Partidos y estadios":["Bolso pequeño o transparente: los pabellones de la NBA no dejan entrar mochilas","Camiseta para el partido (o comprarla allí)"],
+ "🌵 Desierto (día 30)":["Botellas de agua grandes en el coche","Protector solar","Algo de comer para Joshua Tree"],
+ "🛍️ Compras":["Bolsa de viaje plegable para la vuelta","Lista de tallas de cada uno","Báscula de equipaje de mano"]
+};
+let st={};try{st=JSON.parse(localStorage.getItem('ca27')||'{}')}catch(e){}
+function save(id){try{localStorage.setItem('ca27',JSON.stringify(st));const s=document.getElementById(id);if(s){s.style.opacity=1;setTimeout(()=>s.style.opacity=0,900)}}catch(e){}}
+const pk=document.getElementById('packing');let idx=0;
+Object.entries(PACK).forEach(([cat,list])=>{
+  const div=document.createElement('div');
+  div.innerHTML=`<h3>${cat}</h3><ul>${list.map(t=>{const k='p'+(idx++);return `<li><label><input type="checkbox" data-k="${k}" ${st[k]?'checked':''}><span>${t}</span></label></li>`}).join('')}</ul>`;
+  pk.appendChild(div);
+});
+function prog(){const all=pk.querySelectorAll('input');const on=[...all].filter(x=>x.checked).length;document.getElementById('prog').style.width=(on/all.length*100)+'%'}
+prog();
+document.querySelectorAll('input[type=checkbox][data-k]').forEach(c=>{
+  if(st[c.dataset.k])c.checked=true;
+  c.addEventListener('change',()=>{st[c.dataset.k]=c.checked;save('savedP');prog()});
+});
+document.querySelectorAll('[data-f]').forEach(f=>{
+  if(f.tagName==='BUTTON')return;
+  if(st[f.dataset.f])f.value=st[f.dataset.f];
+  f.addEventListener('input',()=>{st[f.dataset.f]=f.value;save('savedF')});
+});
+
+/* Tabs */
+const tabs=['plan','dormir','coche','maletas','vuelos'];
+function show(t){if(!tabs.includes(t))t='plan';
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===t));
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));}
+document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b){location.hash=b.dataset.t;show(b.dataset.t)}});
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+show(location.hash.slice(1));
+</script>
+</body>
+</html>
